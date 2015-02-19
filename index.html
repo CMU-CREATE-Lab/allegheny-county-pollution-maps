@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Allegheny County: NO2 and Black Carbon</title>
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+      #layer-select {
+        z-index: 10;
+        position: absolute;
+        bottom: 243px;
+        right: 5px;
+        border: 1px solid #666;
+        background: #fff;
+      }
+
+      #legend {
+        z-index: 10;
+        position: absolute;
+        bottom: 13px;
+        right: 5px;
+        border: 1px solid #666;
+        background: #fff;
+        height: 210px;
+        width: 168px;
+      }
+      #no2-legend {
+        display:none;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=visualization"></script>
+    <script>
+    var map;
+    var layers = {};
+    var currentLayer = 'bc';
+
+    function initialize() {
+      var styles = [
+  {
+    "featureType": "landscape",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },{
+    "featureType": "poi",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },{
+    "featureType": "road",
+    "elementType": "geometry",
+    "stylers": [
+      { "visibility": "simplified" },
+      { "color": "#808080" }
+    ]
+  },{
+    "featureType": "road.local",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },{
+    "featureType": "transit.station.bus",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },{
+    "featureType": "water",
+    "stylers": [
+      { "visibility": "simplified" },
+      { "saturation": -90 }
+    ]
+  }
+];
+
+      var mapOptions = {
+        center: new google.maps.LatLng(40.51, -80.07),
+        zoom: 10,
+        styles: styles
+      };
+      map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+      layers['no2'] = new google.maps.visualization.MapsEngineLayer({
+          layerId: '15658084116283052074-17195286621334085631',
+          clickable: true,
+          suppressInfoWindows: false,
+          opacity: 0.6
+        });
+
+      layers['bc'] = new google.maps.visualization.MapsEngineLayer({
+          layerId: '15658084116283052074-05155268715559553989',
+          map: map,
+          clickable: true,
+          suppressInfoWindows: false,
+          opacity :0.6
+        });
+
+      var el = document.getElementById("layer-select");
+      el.addEventListener("change", function() {
+        hideLayer(currentLayer);
+        showLayer(this.value);
+        currentLayer = this.value;
+      });
+    }
+
+    function hideLayer(layer_id) {
+      layers[layer_id].setMap();
+      var el = document.getElementById(layer_id+'-legend');
+      el.style['display'] = 'none';
+    }
+
+    function showLayer(layer_id) {
+      layers[layer_id].setMap(map);
+      var el = document.getElementById(layer_id+'-legend');
+      el.style['display'] = 'block';
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+    <select id="layer-select" name="layer-select">
+      <option value="bc">Black Carbon</option>
+      <option value="no2">NO2</option>
+    </select>
+    <div id="legend">
+      <img id="no2-legend" src="no2-map-legend.png" height="210" width="166">
+      <img id="bc-legend" src="bc-map-legend.png" width="156" height="140">
+    </div>
+  </body>
+</html>

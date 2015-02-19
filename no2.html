@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Allegheny County: NO2</title>
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+      #legend {
+        z-index: 10;
+        position: absolute;
+        bottom: 13px;
+        right: 5px;
+        border: 1px solid #666;
+        background: #fff;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=visualization"></script>
+    <script>
+var map;
+
+function initialize() {
+  var styles =[
+  {
+    "featureType": "poi",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },{
+    "featureType": "landscape",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },{
+    "featureType": "transit.station",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },{
+    "featureType": "transit.line",
+    "stylers": [
+      { "visibility": "simplified" }
+    ]
+  },{
+    "featureType": "road.local",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },{
+    "featureType": "road.highway",
+    "stylers": [
+      { "visibility": "simplified" }
+    ]
+  },{
+    "featureType": "road.arterial",
+    "stylers": [
+      { "visibility": "simplified" }
+    ]
+  },{
+    "featureType": "road.highway",
+    "stylers": [
+      { "saturation": -100 }
+    ]
+  },{
+    "featureType": "water",
+    "stylers": [
+      { "saturation": -85 }
+    ]
+  },{
+    "featureType": "road.arterial",
+    "elementType": "labels",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },{
+    "featureType": "administrative.neighborhood",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      { "color": "#000000" }
+    ]
+  },{
+    "featureType": "administrative.locality",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      { "color": "#000000" }
+    ]
+  }
+];
+
+  var mapOptions = {
+    center: new google.maps.LatLng(40.51, -80.07),
+    zoom: 10,
+    styles: styles
+  };
+  map = new google.maps.Map(document.getElementById('map-canvas'),
+    mapOptions);
+
+  mapsEngineLayer = new google.maps.visualization.MapsEngineLayer({
+    layerId: '15658084116283052074-17195286621334085631',
+    map: map,
+    clickable: true,
+    suppressInfoWindows: false
+  });
+  mapsEngineLayer.setOpacity(0.5);
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+    <div id="legend"><img src="no2-map-legend.png" height="210" width="166"></div>
+  </body>
+</html>
