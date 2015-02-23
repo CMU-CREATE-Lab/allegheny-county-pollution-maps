@@ -35,12 +35,56 @@
       #no2-legend {
         display:none;
       }
-    </style>
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=visualization"></script>
+
+      .controls {
+        margin-top: 16px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      #pac-input {
+        background-color: #fff;
+        padding: 0 11px 0 13px;
+        width: 400px;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        text-overflow: ellipsis;
+      }
+
+      #pac-input:focus {
+        border-color: #4d90fe;
+        margin-left: -1px;
+        padding-left: 14px;  /* Regular padding-left + 1. */
+        width: 401px;
+      }
+
+      .pac-container {
+        font-family: Roboto;
+      }
+
+      #type-selector {
+        color: #fff;
+        background-color: #4d90fe;
+        padding: 5px 11px 0px 11px;
+      }
+
+      #type-selector label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=visualization,places"></script>
     <script>
     var map;
     var layers = {};
     var currentLayer = 'bc';
+    var markers = [];
 
     function initialize() {
       var styles = [
@@ -83,10 +127,17 @@
       var mapOptions = {
         center: new google.maps.LatLng(40.51, -80.07),
         zoom: 10,
+        panControl: false,
+        zoomControl: true,
+        zoomControlOptions: {
+          position: google.maps.ControlPosition.LEFT_CENTER
+        },
         styles: styles
       };
+
       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
+      initSearch(map);
       layers['no2'] = new google.maps.visualization.MapsEngineLayer({
           layerId: '15658084116283052074-17195286621334085631',
           clickable: true,
@@ -110,6 +161,57 @@
       });
     }
 
+
+    function initSearch(map) {
+      var input = (document.getElementById('pac-input'));
+      map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+      var searchBox = new google.maps.places.SearchBox((input));
+
+      google.maps.event.addListener(map, 'bounds_changed', function() {
+        var bounds = map.getBounds();
+        searchBox.setBounds(bounds);
+      });
+
+      google.maps.event.addListener(searchBox, 'places_changed', function() {
+        var places = searchBox.getPlaces();
+
+        if (places.length == 0) {
+          return;
+        }
+        for (var i = 0, marker; marker = markers[i]; i++) {
+          marker.setMap(null);
+        }
+
+        // For each place, get the icon, place name, and location.
+        markers = [];
+        var bounds = new google.maps.LatLngBounds();
+        for (var i = 0, place; place = places[i]; i++) {
+          var image = {
+            url: place.icon,
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(25, 25)
+          };
+
+          // Create a marker for each place.
+          var marker = new google.maps.Marker({
+            map: map,
+            icon: image,
+            title: place.name,
+            position: place.geometry.location
+          });
+
+          markers.push(marker);
+
+          bounds.extend(place.geometry.location);
+        }
+
+        map.fitBounds(bounds);
+        map.setZoom(14);
+      });
+    }
     function hideLayer(layer_id) {
       layers[layer_id].setMap();
       var el = document.getElementById(layer_id+'-legend');
@@ -136,5 +238,6 @@
       <img id="no2-legend" src="no2-map-legend.png" height="210" width="166">
       <img id="bc-legend" src="bc-map-legend.png" width="156" height="140">
     </div>
+    <input id="pac-input" class="controls" type="text" placeholder="Search Box" autocomplete="off" style="z-index: 0; position: absolute; left: 0px; top: 0px;">
   </body>
 </html>
