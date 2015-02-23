@@ -11,10 +11,15 @@
       #layer-select {
         z-index: 10;
         position: absolute;
-        bottom: 243px;
+        bottom: 233px;
         right: 5px;
         border: 1px solid #666;
         background: #fff;
+        height: 30px;
+        width: 170px;
+        font-weight: bold;
+        color: blue;
+        font-size: 12pt;
       }
 
       #legend {
@@ -125,7 +130,7 @@
     <div id="map-canvas"></div>
     <select id="layer-select" name="layer-select">
       <option value="bc">Black Carbon</option>
-      <option value="no2">NO2</option>
+      <option value="no2">Nitrogen Dioxide</option>
     </select>
     <div id="legend">
       <img id="no2-legend" src="no2-map-legend.png" height="210" width="166">
