@@ -79,6 +79,7 @@
         font-size: 13px;
         font-weight: 300;
       }    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=visualization,places"></script>
     <script>
     var map;
@@ -88,41 +89,84 @@
 
     function initialize() {
       var styles = [
-  {
-    "featureType": "landscape",
-    "stylers": [
-      { "visibility": "off" }
-    ]
-  },{
-    "featureType": "poi",
-    "stylers": [
-      { "visibility": "off" }
-    ]
-  },{
-    "featureType": "road",
-    "elementType": "geometry",
-    "stylers": [
-      { "visibility": "simplified" },
-      { "color": "#808080" }
-    ]
-  },{
-    "featureType": "road.local",
-    "stylers": [
-      { "visibility": "off" }
-    ]
-  },{
-    "featureType": "transit.station.bus",
-    "stylers": [
-      { "visibility": "off" }
-    ]
-  },{
-    "featureType": "water",
-    "stylers": [
-      { "visibility": "simplified" },
-      { "saturation": -90 }
-    ]
-  }
-];
+        {
+          "featureType": "road",
+          "elementType": "labels",
+          "stylers": [
+            { "visibility": "off" }
+          ]
+        },
+        {
+          "featureType": "road.highway",
+          "stylers": [
+            { "color": "#444444" },
+            { "weight": 0.5 }
+          ]
+        },
+        {
+          "featureType": "road.arterial",
+          "stylers": [
+            { "color": "#888888" },
+            { "weight": 0.25 }
+          ]
+        },
+        {
+          "featureType": "road.local",
+          "stylers": [
+            { "visibility": "off" }
+          ]
+        },
+        {
+          "featureType": "poi",
+          "stylers": [
+            { "visibility": "off" }
+          ]
+        },
+        {
+          "featureType": "landscape",
+          "stylers": [
+            { "visibility": "on" },
+            { "lightness": 90 }
+          ]
+        },
+        {
+          "featureType": "water",
+          "stylers": [
+            { "lightness": 60 }
+          ]
+        },
+        {
+          "featureType": "transit",
+          "stylers": [
+            { "visibility": "off" }
+          ]
+        },
+        {
+          "featureType": "administrative",
+          "stylers": [
+            { "lightness": 0 }
+          ]
+        },
+        {
+          "featureType": "landscape",
+          "stylers": [
+            { "visibility": "off" }
+          ]
+        },
+        {
+          "featureType": "water",
+          "stylers": [
+            { "visibility": "off" }
+          ]
+        },
+        {
+          "featureType": "administrative",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            { "color": "#5F4F2A" }
+          ]
+        }
+      ];
 
       var mapOptions = {
         center: new google.maps.LatLng(40.51, -80.07),
@@ -142,7 +186,7 @@
           layerId: '15658084116283052074-17195286621334085631',
           clickable: true,
           suppressInfoWindows: false,
-          opacity: 0.6
+          opacity: 1.0
         });
 
       layers['bc'] = new google.maps.visualization.MapsEngineLayer({
@@ -150,7 +194,7 @@
           map: map,
           clickable: true,
           suppressInfoWindows: false,
-          opacity :0.6
+          opacity: 1.0
         });
 
       var el = document.getElementById("layer-select");
@@ -159,8 +203,31 @@
         showLayer(this.value);
         currentLayer = this.value;
       });
+      maintainOverlay();
+      google.maps.event.addListener(map, 'bounds_changed', function() {
+        maintainOverlay();
+      });
     }
 
+    var maintainOverlayIntervalsUntilIdle;
+    var maintainOverlayInterval;
+
+    function maintainOverlay() {
+      if (!maintainOverlayInterval) {
+        maintainOverlayInterval = setInterval(function() {
+          raiseBaseLayerOverOverlay();
+          if (!--maintainOverlayIntervalsUntilIdle) {
+            window.clearInterval(maintainOverlayInterval);
+            maintainOverlayInterval = null;
+          }
+        }, 100);
+      }
+      maintainOverlayIntervalsUntilIdle = 100; // keep maintaining for 10 seconds
+    }
+
+    function raiseBaseLayerOverOverlay() {
+      $("img[src*='/vt?']").first().parent().parent().parent().css('z-index', 100);
+    }
 
     function initSearch(map) {
       var input = (document.getElementById('pac-input'));
