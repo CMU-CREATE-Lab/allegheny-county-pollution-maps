@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
   <head>
     <title>Allegheny County: NO2 and Black Carbon</title>
     <style>
@@ -8,77 +10,309 @@
         margin: 0px;
         padding: 0px
       }
-      #layer-select {
-        z-index: 10;
-        position: absolute;
-        bottom: 233px;
-        right: 5px;
-        border: 1px solid #666;
-        background: #fff;
+
+      #container {
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+
+        width: 100%;
         height: 30px;
-        width: 170px;
-        font-weight: bold;
-        color: blue;
-        font-size: 12pt;
+
+        -ms-flex-direction: row;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+
+        position: fixed;
+
+        top: 0;
+        left: 0;
+
+        z-index:2;
+
+        margin: 0;
+        padding: 0;
+
+        background-color: #e65050;
+        background-image: -o-linear-gradient(bottom, #e25d5e 0%, #d44040 100%);
+        background-image: -moz-linear-gradient(bottom, #e25d5e 0%, #d44040 100%);
+        background-image: -webkit-linear-gradient(bottom, #e25d5e 0%, #d44040 100%);
+        background-image: -ms-linear-gradient(bottom, #e25d5e 0%, #d44040 100%);
+        background-image: linear-gradient(to bottom, #e25d5e 0%, #d44040 100%);
+
+            }
+
+
+      #search {
+        -ms-flex-grow: 20;
+        -webkit-flex-grow: 20;
+        flex-grow: 20;
+
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+
+        -ms-flex-direction: row;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+
+        -ms-justify-content: flex-end;
+        -webkit-justify-content: flex-end;
+        justify-content: flex-end;
+        padding: 1px;
+        margin-left: 2px;
+        margin-right: 2px;
+
+        height: 22px;
       }
 
-      #legend {
-        z-index: 10;
-        position: absolute;
-        bottom: 13px;
-        right: 5px;
-        border: 1px solid #666;
-        background: #fff;
-        height: 210px;
-        width: 168px;
+      #input {
+        -ms-flex-grow: 1;
+        -webkit-flex-grow: 1;
+        flex-grow: 1;
       }
-      #no2-legend {
-        display:none;
-      }
-
-      .controls {
-        margin-top: 16px;
-        border: 1px solid transparent;
-        border-radius: 2px 0 0 2px;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        height: 32px;
-        outline: none;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-      }
-
-      #pac-input {
-        background-color: #fff;
-        padding: 0 11px 0 13px;
-        width: 400px;
-        font-family: Roboto;
+      #input input{
+        width: 100%;
+        height: 22px;
         font-size: 15px;
         font-weight: 300;
         text-overflow: ellipsis;
+        padding-right:0px;
+
       }
 
-      #pac-input:focus {
-        border-color: #4d90fe;
-        margin-left: -1px;
-        padding-left: 14px;  /* Regular padding-left + 1. */
-        width: 401px;
+      #button {
+        max-width: 20px;
+        -ms-flex-grow: 1;
+        -webkit-flex-grow: 1;
+        flex-grow: 1;
+        text-align: center;
+        padding: 4px;
       }
 
-      .pac-container {
-        font-family: Roboto;
+      div.button {
+        width: 24px;
+        height: 24px;
+        padding: 3px;
+
+         border: none;
+         border-right-style: solid;
+         border-width: 1px;
+         border-color: rgba(255, 255, 255, 0.3);
+         border-radius: 0;
+
+         background-color: transparent;
+
+         color: #fdf1f1;
+
+         -webkit-transition: background-color 0.4s ease-out;
+         transition: background-color 0.4s ease-out;
+
+         -webkit-tap-highlight-color: transparent;
+
+         vertical-align: middle;
+         text-align: center;
+
       }
 
-      #type-selector {
-        color: #fff;
-        background-color: #4d90fe;
-        padding: 5px 11px 0px 11px;
-      }
+            div.button:hover {
+              background-color: rgba(255, 255, 255, 0.1);
+            }
 
-      #type-selector label {
-        font-family: Roboto;
-        font-size: 13px;
-        font-weight: 300;
-      }    </style>
+            div.button:focus {
+              background-color: rgba(255, 255, 255, 0.2);
+              outline: 0;
+            }
+
+            div.button:active {
+              background-color: rgba(255, 255, 255, 0.4);
+              outline: 0;
+            }
+
+            div.button.selected {
+              background-color: rgba(255, 255, 255, 0.4);
+            }
+
+            div.button:last-child {
+              border-right-style: none;
+            }
+
+            div.button img {
+              width: 18px;
+              height: auto;
+            }
+
+            div.button span {
+              font-size: 14px;
+              font-family: HelveticaNeue, Helvetica, Arial, sans-serif;
+              line-height: 2em;
+            }
+
+            #info {
+              width: 600px;
+              margin-left:-300px;
+              max-height: 100px;
+              font-size: 12px;
+              background-color: #fff;
+              position: absolute;
+              bottom: 0px;
+              left:50%;
+              -webkit-border-radius: 3px;
+              -moz-border-radius: 3px;
+              border-radius: 3px;
+              border: 2px solid #e65050;
+            }
+
+            #bc-info {
+              display: -ms-flexbox;
+              display: -webkit-flex;
+              display: flex;
+
+              -ms-flex-direction: row;
+              -webkit-flex-direction: row;
+              flex-direction: row;
+
+              -ms-justify-content: flex-end;
+              -webkit-justify-content: flex-end;
+              justify-content: flex-end;
+
+            }
+
+            #bc-info p{
+              -ms-flex-grow: 1;
+              -ms-flex: 1 1 auto;
+              -webkit-flex-grow: 1;
+              flex-grow: 1;
+              padding-left: 5px;
+              border-right: 1px solid red;
+            }
+
+            #bc-info img{
+              padding-left: 3px;
+
+              min-width: 117px;
+              max-width: 117px;
+              -ms-flex-grow: 1;
+              -ms-flex: 1 1 auto;
+              -webkit-flex-grow: 1;
+              flex-grow: 1;
+
+            }
+
+            #no2-info {
+              display: none;
+
+              -ms-flex-direction: row;
+              -ms-flex: 1 1 auto;
+              -webkit-flex-direction: row;
+              flex-direction: row;
+
+              -ms-justify-content: flex-end;
+              -webkit-justify-content: flex-end;
+              justify-content: flex-end;
+
+            }
+            #no2-info p{
+              -ms-flex-grow: 1;
+              -ms-flex: 1 1 auto;
+              -webkit-flex-grow: 1;
+              flex-grow: 1;
+              padding-left: 5px;
+              border-right: 1px solid red;
+
+            }
+
+            #no2-info img{
+              padding-left: 3px;
+              min-width: 125px;
+              max-width: 125px;
+              -ms-flex-grow: 1;
+              -ms-flex: 0 1 auto
+              -webkit-flex-grow: 1;
+              flex-grow: 1;
+
+            }
+
+
+
+            .bc-info {
+              display: block;
+            }
+
+            .no2-info {
+              display: none;
+            }
+
+            @media all and (min-width: 300px) {
+              #info {
+                width: 300px;
+                margin-left:-150px;
+                max-height: 160px;
+                font-size: 8px;
+              }
+
+            }
+
+            @media all and (min-width: 600px) {
+              #info {
+                width: 500px;
+                margin-left:-250px;
+                max-height: 160px;
+                font-size: 12px;
+              }
+            }
+
+            @media all and (min-width: 800px) {
+              #container {
+                height: 60px;
+              }
+              #button {
+                max-width: 40px;
+                padding: 8px;
+              }
+              div.button {
+                width: 48px;
+                height: 48px;
+                padding: 6px;
+              }
+              div.button span {
+                font-size: 14px;
+                font-family: HelveticaNeue, Helvetica, Arial, sans-serif;
+                line-height: 4em;
+              }
+              #input input{
+                height: 44px;
+                padding: 1px;
+              }
+
+              #search {
+                padding: 5px;
+              }
+
+              div.button img {
+                width: 32px;
+              }
+
+              #info {
+                width: 800px;
+                margin-left:-400px;
+                max-height: 160px;
+                font-size: 14px;
+              }
+
+
+            }
+
+
+          @media all and (max-width: 375px) {
+            #input input{
+              height: 18px;
+              max-width: 220px;
+              padding-left: 5px;
+            }
+          }
+
+    </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=visualization,places"></script>
     <script>
@@ -86,6 +320,8 @@
     var layers = {};
     var currentLayer = 'bc';
     var markers = [];
+    var currentSelectedTab = 0;
+    var tabBtns;
 
     function initialize() {
       var styles = [
@@ -169,7 +405,7 @@
       ];
 
       var mapOptions = {
-        center: new google.maps.LatLng(40.51, -80.07),
+        center: new google.maps.LatLng(40.38, -79.9),
         zoom: 10,
         panControl: false,
         zoomControl: true,
@@ -196,17 +432,27 @@
           suppressInfoWindows: false,
           opacity: 1.0
         });
-
+/*
       var el = document.getElementById("layer-select");
       el.addEventListener("change", function() {
         hideLayer(currentLayer);
         showLayer(this.value);
         currentLayer = this.value;
       });
+      */
+
       maintainOverlay();
       google.maps.event.addListener(map, 'bounds_changed', function() {
         maintainOverlay();
       });
+
+      tabBtns = document.querySelectorAll('.layer');
+
+      for(var i = 0; i < tabBtns.length; i++) {
+        tabBtns[i].addEventListener('click', onTabClick(i, tabBtns[i]), true);
+      }
+      selectTab(tabBtns[currentSelectedTab]);
+
     }
 
     var maintainOverlayIntervalsUntilIdle;
@@ -231,7 +477,7 @@
 
     function initSearch(map) {
       var input = (document.getElementById('pac-input'));
-      map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+      //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
       var searchBox = new google.maps.places.SearchBox((input));
 
@@ -281,15 +527,40 @@
     }
     function hideLayer(layer_id) {
       layers[layer_id].setMap();
-      var el = document.getElementById(layer_id+'-legend');
-      el.style['display'] = 'none';
+      var els = document.querySelectorAll('.' + layer_id+'-info');
+      console.log(els);
+      for(var i = 0; i < els.length; i++) {
+        els[i].style['display'] = 'none';
+      }
     }
 
     function showLayer(layer_id) {
       layers[layer_id].setMap(map);
-      var el = document.getElementById(layer_id+'-legend');
-      el.style['display'] = 'block';
+      var els = document.querySelectorAll('.' + layer_id+'-info');
+      for(var i = 0; i < els.length; i++) {
+        els[i].style['display'] = 'block';
+      }
     }
+
+    function onTabClick(index, btn) {
+      return function(e) {
+        currentSelectedTab = index;
+        selectTab(btn);
+      };
+    }
+
+    function selectTab(btn) {
+      var currentTab = document.querySelector('.layer.selected');
+      if(currentTab) {
+        currentTab.classList.remove('selected');
+        hideLayer(currentTab.id);
+      }
+      btn.classList.add('selected');
+      showLayer(btn.id);
+
+    }
+
+
 
     google.maps.event.addDomListener(window, 'load', initialize);
 
@@ -297,14 +568,67 @@
   </head>
   <body>
     <div id="map-canvas"></div>
-    <select id="layer-select" name="layer-select">
-      <option value="bc">Black Carbon</option>
-      <option value="no2">Nitrogen Dioxide</option>
-    </select>
-    <div id="legend">
-      <img id="no2-legend" src="no2-map-legend.png" height="210" width="166">
-      <img id="bc-legend" src="bc-map-legend.png" width="156" height="140">
+    <div id="container">
+      <div id="bc" class="layer button"><span>BC</span></div>
+      <div id="no2" class="layer button"><span>NO<sub>2</sub></span></div>
+      <div id="search">
+        <div id="input">
+          <input type="text" placeholder="Search Box" autocomplete="off" id="pac-input">
+        </div>
+        <div id="button" class="button"><img src="./search-icon-light.png"></div>
+      </div>
     </div>
+    <div id="info">
+      <div id="bc-info">
+        <p class="bc-info">
+          Black carbon (<strong>BC</strong>) is easily identifiable as black
+
+or grey "soot" emitted from a diesel truck, industrial facility, or camp fire. BC is a
+
+component of fine particulate matter (<strong>PM</strong><sub>2.5</sub>); breathing fine particles increases risks of
+
+asthma attacks, heart attacks, reduced lung function, lung cancer, and death. Allegheny
+
+County does not meet federal standards for <strong>PM</strong><sub>2.5</sub> concentrations, and BC is part of the
+
+problem. In Pittsburgh, the major sources of BC are industrial facilities and diesel
+
+vehicles. The highest <strong>BC</strong> (and <strong>PM</strong><sub>2.5</sub>) concentrations are found in communities in the river
+
+valleys, and people living in those communities have higher risks of negative health
+
+impacts than both the county and national average.
+        </p>
+        <p class="no2-info">
+          Nitrogen dioxide (<strong>NO</strong><sub>2</sub>) is part of a larger class of
+
+          compounds called nitrogen oxides (<strong>NO</strong><sub>x</sub>) that are emitted by cars, trucks, buses, trains,
+
+          power plants, industrial facilities, and outdoor power equipment. NO2 is one of the EPA's
+
+          criteria pollutants that have strict ambient concentration standards. Exposure to <strong>NO</strong><sub>2</sub>, even
+
+          for as little as 30 minutes, increases airway inflammation in healthy people and can
+
+          worsen asthma symptoms. In Pittsburgh, the highest <strong>NO</strong><sub>2</sub> concentrations are found
+
+          downtown, along major roadways, and near industrial areas. People living or working in
+
+          these areas have higher risk of airway inflammation and asthma attacks.
+        </p>
+        <img id="bc-legend" src="bc-map-legend.png" class="bc-info" width="117" height="130">
+        <img id="no2-legend" src="no2-map-legend.png"  class="no2-info" width="125" height="158">
+
+      </div>
+
+    </div>
+
+
+<!--
     <input id="pac-input" class="controls" type="text" placeholder="Search Box" autocomplete="off" style="z-index: 0; position: absolute; left: 0px; top: 0px;">
+  -->
   </body>
+  <script>
+
+  </script>
 </html>
