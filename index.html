@@ -191,8 +191,6 @@
         }
 
         #bc-info img{
-          min-width: 117px;
-          max-width: 117px;
           -ms-flex-grow: 1;
           -ms-flex: 1 1 auto;
           -webkit-flex-grow: 1;
@@ -203,8 +201,14 @@
 
         }
 
-        #no2-info {
+        #no2-wrapper {
           display: none;
+        }
+
+        #no2-info {
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
 
           -ms-flex-direction: row;
           -ms-flex: 1 1 auto;
@@ -229,8 +233,6 @@
         }
 
         #no2-info img{
-          min-width: 125px;
-          max-width: 125px;
           -ms-flex-grow: 1;
           -ms-flex: 0 1 auto
           -webkit-flex-grow: 1;
@@ -248,10 +250,21 @@
         }
 
         .no2-info {
-          display: none;
+          display: block;
         }
 
         @media all and (min-width: 300px) {
+          #bc-info img{
+            min-width:43px;
+            max-width:43px;
+            height:38.5897px;
+          }
+          #no2-info img{
+            min-width:45px;
+            max-width:45px;
+            height:56.9277px;
+          }
+
           #info {
             width: 300px;
             margin-left:-150px;
@@ -268,6 +281,17 @@
         }
 
         @media all and (min-width: 600px) {
+          #bc-info img{
+            min-width:86px;
+            max-width:86px;
+            height:77.1795px;
+          }
+          #no2-info img{
+            min-width:90px;
+            max-width:90px;
+            height:113.8554px;
+          }
+
           #info {
             width: 500px;
             margin-left:-250px;
@@ -284,6 +308,16 @@
         }
 
         @media all and (min-width: 800px) {
+          #bc-info img{
+            min-width:115px;
+            max-width:115px;
+            height:103.2051px;
+          }
+          #no2-info img{
+            min-width:120px;
+            max-width:120px;
+            height:151.8072px;
+          }
           #container {
             height: 60px;
           }
@@ -318,6 +352,8 @@
             width: 800px;
             margin-left:-400px;
             max-height: 170px;
+            min-height: 165px;
+
             font-size: 14px;
           }
 
@@ -633,19 +669,14 @@
     }
     function hideLayer(layer_id) {
       layers[layer_id].setMap();
-      var els = document.querySelectorAll('.' + layer_id+'-info');
-      console.log(els);
-      for(var i = 0; i < els.length; i++) {
-        els[i].style['display'] = 'none';
-      }
+      var el = document.getElementById(layer_id + '-wrapper');
+      el.style['display'] = 'none';
     }
 
     function showLayer(layer_id) {
       layers[layer_id].setMap(map);
-      var els = document.querySelectorAll('.' + layer_id+'-info');
-      for(var i = 0; i < els.length; i++) {
-        els[i].style['display'] = 'block';
-      }
+      var el = document.getElementById(layer_id + '-wrapper');
+      el.style['display'] = 'block';
     }
 
     function onTabClick(index, btn) {
@@ -700,52 +731,56 @@
       </div>
     </div>
     <div id="info">
-      <div id="bc-info">
-        <p class="bc-info">
-          Black carbon (<strong>BC</strong>) is easily identifiable as black
+      <div id="bc-wrapper">
+        <div id="bc-info">
+          <p class="bc-info">
+            Black carbon (<strong>BC</strong>) is easily identifiable as black
 
-or grey "soot" emitted from a diesel truck, industrial facility, or camp fire. BC is a
+            or grey "soot" emitted from a diesel truck, industrial facility, or camp fire. BC is a
 
-component of fine particulate matter (<strong>PM</strong><sub>2.5</sub>); breathing fine particles increases risks of
+            component of fine particulate matter (<strong>PM</strong><sub>2.5</sub>); breathing fine particles increases risks of
 
-asthma attacks, heart attacks, reduced lung function, lung cancer, and death. Allegheny
+            asthma attacks, heart attacks, reduced lung function, lung cancer, and death. Allegheny
 
-County does not meet federal standards for <strong>PM</strong><sub>2.5</sub> concentrations, and BC is part of the
+            County does not meet federal standards for <strong>PM</strong><sub>2.5</sub> concentrations, and BC is part of the
 
-problem. In Pittsburgh, the major sources of BC are industrial facilities and diesel
+            problem. In Pittsburgh, the major sources of BC are industrial facilities and diesel
 
-vehicles. The highest <strong>BC</strong> (and <strong>PM</strong><sub>2.5</sub>) concentrations are found in communities in the river
+            vehicles. The highest <strong>BC</strong> (and <strong>PM</strong><sub>2.5</sub>) concentrations are found in communities in the river
 
-valleys, and people living in those communities have higher risks of negative health
+            valleys, and people living in those communities have higher risks of negative health
 
-impacts than both the county and national average.
-<br/>
-<a href="#bc-learn-more" onclick="showLearnMore('bc-learn-more')">Learn More</a>
-        </p>
-        <p class="no2-info">
-          Nitrogen dioxide (<strong>NO</strong><sub>2</sub>) is part of a larger class of
-
-          compounds called nitrogen oxides (<strong>NO</strong><sub>x</sub>) that are emitted by cars, trucks, buses, trains,
-
-          power plants, industrial facilities, and outdoor power equipment. NO<sub>2</sub> is one of the EPA's
-
-          criteria pollutants that have strict ambient concentration standards. Exposure to <strong>NO</strong><sub>2</sub>, even
-
-          for as little as 30 minutes, increases airway inflammation in healthy people and can
-
-          worsen asthma symptoms. In Pittsburgh, the highest <strong>NO</strong><sub>2</sub> concentrations are found
-
-          downtown, along major roadways, and near industrial areas. People living or working in
-
-          these areas have higher risk of airway inflammation and asthma attacks.
-          <br/>
-          <a href="#no2-learn-more" onclick="showLearnMore('no2-learn-more')">Learn More</a>
-        </p>
-        <img id="bc-legend" src="bc-map-legend.png" class="bc-info" width="117" height="130">
-        <img id="no2-legend" src="no2-map-legend.png"  class="no2-info" width="125" height="158">
-
+            impacts than both the county and national average.
+            <br/>
+            <a href="#bc-learn-more" onclick="showLearnMore('bc-learn-more')">Learn More</a>
+          </p>
+          <img id="bc-legend" src="bc-map-legend.png" class="bc-info">
+        </div>
       </div>
+      <div id="no2-wrapper">
+        <div id="no2-info">
+          <p class="no2-info">
+            Nitrogen dioxide (<strong>NO</strong><sub>2</sub>) is part of a larger class of
 
+            compounds called nitrogen oxides (<strong>NO</strong><sub>x</sub>) that are emitted by cars, trucks, buses, trains,
+
+            power plants, industrial facilities, and outdoor power equipment. NO<sub>2</sub> is one of the EPA's
+
+            criteria pollutants that have strict ambient concentration standards. Exposure to <strong>NO</strong><sub>2</sub>, even
+
+            for as little as 30 minutes, increases airway inflammation in healthy people and can
+
+            worsen asthma symptoms. In Pittsburgh, the highest <strong>NO</strong><sub>2</sub> concentrations are found
+
+            downtown, along major roadways, and near industrial areas. People living or working in
+
+            these areas have higher risk of airway inflammation and asthma attacks.
+            <br/>
+            <a href="#no2-learn-more" onclick="showLearnMore('no2-learn-more')">Learn More</a>
+          </p>
+          <img id="no2-legend" src="no2-map-legend.png"  class="no2-info">
+        </div>
+      </div>
     </div>
     <div id="bc-learn-more" class="learn-more modal" aria-hidden="true">
       <div class="modal-dialog">
