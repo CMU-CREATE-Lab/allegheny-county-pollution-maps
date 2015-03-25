@@ -240,10 +240,7 @@
           padding-left: 14px;
           padding-top: 11px;
           padding-right: 15px;
-
         }
-
-
 
         .bc-info {
           display: block;
@@ -269,11 +266,11 @@
             width: 300px;
             margin-left:-150px;
             max-height: 170px;
-            font-size: 8px;
+            font-size: 7px;
           }
 
           .learn-more {
-            width: 300px;
+            width: 286px;
             margin-left:-150px;
             font-size: 8px;
           }
@@ -296,7 +293,7 @@
             width: 500px;
             margin-left:-250px;
             max-height: 170px;
-            font-size: 12px;
+            font-size: 10px;
           }
 
           .learn-more {
@@ -349,24 +346,21 @@
           }
 
           #info {
-            width: 800px;
+            width: 796px;
             margin-left:-400px;
-            max-height: 170px;
+            max-height: 200px;
             min-height: 165px;
 
             font-size: 14px;
           }
 
           .learn-more {
-            width: 800px;
+            width: 786px;
             margin-left:-400px;
             max-height: 160px;
             font-size: 14px;
           }
-
-
         }
-
 
       @media all and (max-width: 375px) {
         #input input{
@@ -471,6 +465,21 @@
     var currentLearnMore;
 
     function initialize() {
+      // Deal with stupid mobile rubberband effect (iOS, etc) when pulling a page up/down at the end points
+      jQuery('#info, #overlay, .modal-header, .btn-close, .modal-footer, #container').on('touchmove', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+      });
+      jQuery(".modal-body").scrollTop(1);
+      jQuery(".modal-body").on("scroll", function() {
+        var maxScroll = jQuery(".modal-body")[0].scrollHeight - jQuery(".modal-body").height();
+        if (jQuery(this).scrollTop() === 0) {
+          jQuery(this).scrollTop(1);
+        } else if (jQuery(this).scrollTop() === maxScroll) {
+          jQuery(this).scrollTop(maxScroll - 1);
+         }
+      });
+
       var styles = [
         {
           "featureType": "road",
@@ -785,7 +794,7 @@
     <div id="bc-learn-more" class="learn-more modal" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-header">
-          <h2>More about Black Carbon</h2>
+          <h2>About Black Carbon</h2>
           <a href="#close" onclick="hideLearnMore('bc-learn-more')" class="btn-close" aria-hidden="true">×</a> <!--CHANGED TO "#close"-->
         </div>
         <div class="modal-body">
@@ -863,7 +872,7 @@
     <div id="no2-learn-more" class="learn-more modal" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-header">
-          <h2>More About Nitrogen Oxides</h2>
+          <h2>About Nitrogen Oxides</h2>
           <a href="#close" onclick="hideLearnMore('no2-learn-more')" class="btn-close" aria-hidden="true">×</a> <!--CHANGED TO "#close"-->
         </div>
         <div class="modal-body">
