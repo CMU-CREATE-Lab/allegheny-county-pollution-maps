@@ -629,7 +629,13 @@
       $("img[src*='/vt?']").first().parent().parent().parent().css('z-index', 100);
     }
 
+var a;
+var b;
+
     function initSearch(map) {
+      var aghBounds = new google.maps.LatLngBounds();
+      aghBounds.extend(new google.maps.LatLng(40.08,-80.4));
+      aghBounds.extend(new google.maps.LatLng(40.78,-79.24));
       var input = (document.getElementById('pac-input'));
       //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
@@ -674,9 +680,11 @@
 
           bounds.extend(place.geometry.location);
         }
-
-        map.fitBounds(bounds);
-        map.setZoom(14);
+        if (aghBounds.contains(bounds.getCenter())) {
+          console.log('fits');
+          map.fitBounds(bounds);
+          map.setZoom(14);
+        }
       });
     }
     function hideLayer(layer_id) {
