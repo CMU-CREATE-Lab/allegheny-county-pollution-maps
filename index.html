@@ -287,6 +287,10 @@
           border: 2px solid #828282;
         }
 
+        #info span {
+          float: right;
+        }
+
         #bc-info {
           display: -ms-flexbox;
           display: -webkit-flex;
@@ -905,7 +909,10 @@
 
             impacts than both the county and national average.
             <br/>
-            <a href="#bc-learn-more" onclick="showLearnMore('bc-learn-more')">Learn More</a>
+            <span>
+              <a href="#bc-learn-more" onclick="showLearnMore('bc-learn-more')">Learn More</a> &nbsp;|&nbsp;
+              <a href="#what-do-these-maps-represent" onclick="showLearnMore('what-do-these-maps-represent')">What do these maps represent?</a>
+          </span>
           </p>
           <img id="bc-legend" src="bc-map-legend.png" class="bc-info">
         </div>
@@ -929,7 +936,10 @@
 
             these areas have higher risk of airway inflammation and asthma attacks.
             <br/>
-            <a href="#no2-learn-more" onclick="showLearnMore('no2-learn-more')">Learn More</a>
+            <span>
+              <a href="#no2-learn-more" onclick="showLearnMore('no2-learn-more')">Learn More</a> &nbsp;|&nbsp;
+              <a href="#what-do-these-maps-represent" onclick="showLearnMore('what-do-these-maps-represent')">What do these maps represent?</a>
+            </span>
           </p>
           <img id="no2-legend" src="no2-map-legend.png"  class="no2-info">
         </div>
@@ -1088,6 +1098,31 @@
         </div>
       </div>
     </div>
+
+    <div id="what-do-these-maps-represent" class="learn-more modal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h2>What do these maps represent?</h2>
+          <a href="#close" onclick="hideLearnMore('what-do-these-maps-represent')" class="btn-close" aria-hidden="true">×</a> <!--CHANGED TO "#close"-->
+        </div>
+        <div class="modal-body">
+          <p>
+            The pollutant maps show our best estimate of the <em>annual average</em> concentrations of different pollutants in Allegheny County. 
+            The maps are informed by data collected by Carnegie Mellon researchers between 2011 and 2014 using a mobile air quality laboratory.
+            Air quality data was collected at 70 sites across the county at different times of day and in multiple seasons.
+            We then use a statistical model to reproduce the measurements at the 70 sampling sites and to interpolate between the sites.
+            The final map is rendered with 5 meter resolution.
+          </p>
+          <p>
+            Mapping annual average concentrations means that at any given time, concentrations may be higher or lower than our predictions at a given location.
+            We use the annual average because it is relevant to health effects associated with chronic, long term exposure to air pollution.
+          </p>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+
 
     <div id="overlay"></div>
   </body>
