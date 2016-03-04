@@ -690,6 +690,7 @@
       var mapOptions = {
         center: new google.maps.LatLng(40.38, -79.9),
         zoom: 10,
+        maxZoom: 14,
         panControl: false,
         zoomControl: true,
         zoomControlOptions: {
@@ -703,20 +704,28 @@
       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
       initSearch(map);
-      layers['no2'] = new google.maps.visualization.MapsEngineLayer({
-          layerId: '15658084116283052074-17195286621334085631',
-          clickable: true,
-          suppressInfoWindows: false,
-          opacity: 1.0
-        });
 
-      layers['bc'] = new google.maps.visualization.MapsEngineLayer({
-          layerId: '15658084116283052074-05155268715559553989',
-          map: map,
-          clickable: true,
-          suppressInfoWindows: false,
-          opacity: 1.0
-        });
+      layers['no2'] = new google.maps.ImageMapType({
+            getTileUrl: function(coord, zoom) {
+                return 'Allegheny_NO2_masked/' + zoom + '/' + coord.x + '/' + (Math.pow(2, zoom) - 1 - coord.y) + '.png';
+            },
+            tileSize: new google.maps.Size(256, 256),
+            isPng: true,
+            opacity: 0
+      });
+      map.overlayMapTypes.push(layers['no2']);
+
+      layers['bc'] = new google.maps.ImageMapType({
+            getTileUrl: function(coord, zoom) {
+                return 'county_BC_one_model_masked/' + zoom + '/' + coord.x + '/' + (Math.pow(2, zoom) - 1 - coord.y) + '.png';
+            },
+            tileSize: new google.maps.Size(256, 256),
+            isPng: true
+      });
+
+      map.overlayMapTypes.push(layers['bc']);
+
+      
 
       maintainOverlay();
       google.maps.event.addListener(map, 'bounds_changed', function() {
@@ -810,13 +819,13 @@
       });
     }
     function hideLayer(layer_id) {
-      layers[layer_id].setMap();
+      layers[layer_id].setOpacity(0);
       var el = document.getElementById(layer_id + '-wrapper');
       el.style['display'] = 'none';
     }
 
     function showLayer(layer_id) {
-      layers[layer_id].setMap(map);
+      layers[layer_id].setOpacity(1);
       var el = document.getElementById(layer_id + '-wrapper');
       el.style['display'] = 'block';
     }
